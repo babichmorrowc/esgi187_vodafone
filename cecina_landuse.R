@@ -104,6 +104,28 @@ ggplot(combined_summary_45_110_landuse, aes(x = x, y = y)) +
        color = "Land use") +
   theme_minimal()
 
+# Plot a small area to check
+bristol <- combined_summary_45_110_landuse %>% 
+  filter(x >= 333000 & x <= 383000 & y >= 147000 & y <= 197000)
+ggplot(bristol, aes(x = x, y = y, color = urban_rural), size = 0.5) +
+  geom_point() +
+  coord_fixed() +
+  theme_minimal()
+
+# Plot shape files for bristol area
+bristol_polys <- st_crop(uk_glx_geodata_townsuburb_combined, 
+                                 xmin = 333000, xmax = 383000, 
+                                 ymin = 147000, ymax = 197000)
+plot(bristol_polys["geog"], main = "Bristol urban locations")
+ggplot(bristol_polys) +
+  geom_sf(fill = "grey", alpha = 0.5) +
+  geom_point(data = bristol, aes(x = x, y = y, color = urban_rural)) +
+  # coord_sf(xlim = c(333000, 383000), ylim = c(147000, 197000)) +
+  labs(title = "Bristol: Ofcom path over urban/rural areas",
+       color = "Urban/Rural",
+       x = "",
+       y = "") +
+  theme_minimal()
 
 # Save out urban & rural classification joined to data
 dave_4g_lte_2024_mobile_signal_measurement_data_combined_summary_45_110_ext <- read_csv("data/4g-lte-2024-mobile-signal-measurement-data-combined-summary-45-110-ext.csv")
