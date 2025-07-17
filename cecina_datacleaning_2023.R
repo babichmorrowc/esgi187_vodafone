@@ -9,13 +9,18 @@ library(raster)
 library(tidyverse)
 
 latlon2tb <- function(lat, lon, bin_length = 25) {
-  pts <- sgo_points(list(longitude=lon, latitude=lat), epsg=4326)
-  bng.pts <- sgo_lonlat_bng(pts)
+  pts <- sgo_points(list(longitude=lon, latitude=lat), epsg = 4277)
+  bng.pts <- sgo_lonlat_bng(pts, to = 27700)
   tb.x <- bng.pts$x - bng.pts$x %% bin_length
   tb.y <- bng.pts$y - bng.pts$y %% bin_length
   terrain_bin <- paste(tb.x, tb.y, sep = "")
   return(terrain_bin)
 }
+
+# lat lon test
+lat <- 51.5074
+lon <- -0.1278
+latlon2tb(lat = lat, lon = lon, bin_length = 100)
 
 lte_2023 <- read_csv(
   "data/Tony_Vernon_2023_Data_Model_and_Input_Files/lte_2023.csv",
