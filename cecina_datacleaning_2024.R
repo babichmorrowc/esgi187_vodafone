@@ -84,46 +84,62 @@ rm(lte_2024)
 
 # summary by TB
 # Over all 4 observations
-lte_2024_wide_tb_all <- lte_2024_long |> 
-  mutate(pci = as.factor(pci)) |> 
-  group_by(tb) |> 
-  summarise(
-    mean_rsrp_all = mean(rsrp),
-    sd_rsrp_all = sd(rsrp),
-    median_rsrp_all = median(rsrp),
-    max_rsrp_all = max(rsrp),
-    # mode_pci_all = Mode(pci), # custom mode function
-    best_pci_all = pci[which.max(max_rsrp_all)],
-    # number of PCIs
-    n_pcis_all = length(unique(pci)),
-    n_obs_all = n()
-  )
+# tictoc::tic()
+# lte_2024_wide_tb_all <- lte_2024_long |> 
+#   mutate(pci = as.factor(pci)) |> 
+#   group_by(tb) |> 
+#   summarise(
+#     mean_rsrp_all = mean(rsrp),
+#     sd_rsrp_all = sd(rsrp),
+#     median_rsrp_all = median(rsrp),
+#     max_rsrp_all = max(rsrp),
+#     # mode_pci_all = Mode(pci), # custom mode function
+#     best_pci_all = pci[which.max(max_rsrp_all)],
+#     # number of PCIs
+#     n_pcis_all = length(unique(pci)),
+#     n_obs_all = n()
+#   )
+# tictoc::toc() # 2.73 minutes
+# save out
+write_feather(lte_2024_wide_tb_all, "data/lte_2024_wide_tb_all.feather")
+lte_2024_wide_tb_all <- read_feather("data/lte_2024_wide_tb_all.feather")
 
 # For only the best RSRP of the 4 observations
-best_obs <- lte_2024_long |>
-  mutate(pci = as.factor(pci)) |> 
-  group_by(obs_id, tb) |> 
-  order_by(rsrp, .desc = TRUE) |>
-  slice(1)
+# Check that I'm getting the best observation correctly
+# tictoc::tic()
+# best_obs <- lte_2024_long |>
+#   mutate(pci = as.factor(pci)) |> 
+#   group_by(obs_id, tb) |> 
+#   # switch to slice_max(rsrp, n = 1)
+#   arrange(desc(rsrp)) |>
+#   slice(1)
+# tictoc::toc() # 20 minutes
+# save out
+write_feather(best_obs, "data/best_obs.feather")
 
-lte_2024_wide_tb_best <- lte_2024_long |>
-  mutate(pci = as.factor(pci)) |> 
-  group_by(obs_id, tb) |> 
-  order_by(rsrp, .desc = TRUE) |>
-  slice(1) |>
+tictoc::tic()
+lte_2024_wide_tb_best <- best_obs |>
   summarise(
     mean_rsrp_best = mean(rsrp),
     sd_rsrp_best = sd(rsrp),
     median_rsrp_best = median(rsrp),
     max_rsrp_best = max(rsrp),
-    mode_pci_best = Mode(pci), # custom mode function
+    # mode_pci_best = Mode(pci), # custom mode function
     best_pci_best = pci[which.max(max_rsrp_best)],
     # number of PCIs
     n_pcis_best = length(unique(pci)),
     n_obs_best = n()
   )
+tictoc::t
+# save out
+write_feather(lte_2024_wide_tb_best, "data/lte_2024_wide_tb_best.feather")
 
 
 #### Join Vodafone predicted data #####
+# Predicted best PCI per terrain bin
 best_pcis <- read_feather("data/coordinates_Predicted_BestPCIs.feather") |> 
   mutate(tb = paste0(x,y))
+
+# Predicted RSRP per terrain bin
+predicted_rsrp <- read_feather("data/coordinates_Predicted_Rsrp.feather") |>
+  
