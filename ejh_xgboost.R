@@ -8,7 +8,7 @@ library(patchwork)
 
 
 ### DATA
-lte_2024 <- read_csv("~/OneDrive - University of Dundee/KnowledgeExchange/ESGI-187-Bristol/vodafone/data/4g-lte-2024-mobile-signal-measurement-data-combined-summary-45-110-ext-landuse-sites.csv") |> 
+lte_2024 <- read_csv("4g-lte-2024-mobile-signal-measurement-data-combined-summary-45-110-ext-landuse-sites.csv") |> 
   mutate(
     err_match1_mean = voda_rsrp - ofcom_rsrp_match_1_mean,
     err_match_mean  = voda_rsrp - ofcom_rsrp_match_mean,

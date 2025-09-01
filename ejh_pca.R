@@ -8,7 +8,7 @@ library(GGally)
 library(corrplot)
 library(forcats)
 
-lte_2024 <- read_csv("~/OneDrive - University of Dundee/KnowledgeExchange/ESGI-187-Bristol/vodafone/data/4g-lte-2024-mobile-signal-measurement-data-combined-summary-45-110-ext-landuse-sites.csv")
+lte_2024 <- read_csv("4g-lte-2024-mobile-signal-measurement-data-combined-summary-45-110-ext-landuse-sites.csv")
 
 lte_2024 <- lte_2024 |> 
   mutate(
@@ -99,19 +99,25 @@ ggsave("pca_pc_space.png", p3, width = 6, height = 4, dpi = 300)
 
 # Contribution of variables to PC1
 p4 <- fviz_contrib(res.pca, choice = "var", axes = 1, top = 4, ylim = c(0, 50), base_size = 16) +
-  ggtitle("Top Contributors to PC1") 
+  ggtitle("Top Contributors to PC1") + theme_classic(base_size = 16) +
+  theme(axis.title.x = element_blank()) +
+  scale_x_discrete(guide = guide_axis(angle = 45))
 ggsave("pca_cont_pc1.png", p4, width = 6, height = 4, dpi = 300)
 
 
 # Contribution of variables to PC2
 p5 <- fviz_contrib(res.pca, choice = "var", axes = 2, top = 4, ylim = c(0, 50), base_size = 16) +
-  ggtitle("Top Contributors to PC2") 
+  ggtitle("Top Contributors to PC2") + theme_classic(base_size = 16) +
+  theme(axis.title.x = element_blank()) +
+  scale_x_discrete(guide = guide_axis(angle = 45))
 ggsave("pca_cont_pc2.png", p5, width = 6, height = 4, dpi = 300)
 
 
 # Contribution of variables to PC3
 p6 <- fviz_contrib(res.pca, choice = "var", axes = 3, top = 4, ylim = c(0, 50), base_size = 16) +
-  ggtitle("Top Contributors to PC3")
+  ggtitle("Top Contributors to PC3") + theme_classic(base_size = 16) +
+  theme(axis.title.x = element_blank()) +
+  scale_x_discrete(guide = guide_axis(angle = 45))
 ggsave("pca_cont_pc3.png", p6, width = 6, height = 4, dpi = 300)
 
 
@@ -155,8 +161,9 @@ p8 <- pc_scores |>
   slice_sample(n = 5000) |>
   ggpairs(
     columns = 1:3,
-    mapping = aes(colour = pci_match, fill   = pci_match),
-    title   = "Pairwise PCs 1–3 by PCI Match",
+    mapping = aes(colour = pci_match, fill   = pci_match, alpha = 0.2),
+    title   = "Pairwise PCs by Land Use",
     palette = pal
   ) + theme_classic(base_size = 16)
-ggsave("pca_pc_scores.png", p8, width = 6, height = 4, dpi = 300)
+ggsave("pca_pairwise.png", p8, width = 6, height = 4, dpi = 300)
+ 
