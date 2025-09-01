@@ -8,5 +8,12 @@ This repository contains code for analyses related to the Vodafone challenge at 
 + `data_processing.jl`: Julia script for data cleaning and processing which produces a csv file with relevant data fields from both Ofcom and Vodafone data for each terrainbin ([@dawbarton](https://github.com/dawbarton))
 + `cecina_landuse.R`: R script taking the cleaned data produced by `data_processing.jl`, adding on urban vs. rural land use classification, and writing out the resulting csv ([@babichmorrowc](https://github.com/babichmorrowc))
 + `ejh_pca.R`: R script performing Principle Components Analysis (PCA) ([@ejhall](https://github.com/ejhall))
-+ `ejh_gam.R` : R script for building and fitting the GAM model. ([@ejhall](https://github.com/ejhall))
++ `ejh_gam.R` : R script for building and fitting the GAM model ([@ejhall](https://github.com/ejhall))
 + `ejh_xgboost.R` : R script for building and fitting the XGBoost regression models and performing SHAP analysis. ([@ejhall](https://github.com/ejhall))
+
+
+### Key data files
+
++ `4g-lte-2024-mobile-signal-measurement-data-combined-summary-45-110-ext-landuse-sites.csv` : derived data product
++ `xgb_vanilla.model` : fitted XGBoost (vanilla) model ([@ejhall](https://github.com/ejhall))
++ `xgb_dart.model` : fitted XGBoost (DART) model ([@ejhall](https://github.com/ejhall))
